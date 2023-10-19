@@ -25,6 +25,7 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
     private String username;
+    private String name;
     private String password;
 
     @Enumerated(EnumType.STRING)

@@ -21,4 +21,11 @@ public class WordService {
 
         return word;
     }
+
+    public List<Word> getWords() {
+        Word word1 = Word.builder().word("10010").meaning("소개").build();
+        Word word2 = Word.builder().word("10020").meaning("축하").build();
+        Word word3 = Word.builder().word("10030").meaning("redirect:/book/").build();
+        return List.of(word1, word2, word3);
+    }
 }

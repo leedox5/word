@@ -3,11 +3,9 @@ package kr.leedox.word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -15,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     WordService wordService;
 
     @GetMapping("/demo")
-    public ResponseEntity<String> hello(@AuthenticationPrincipal UserDetails user) {
-        return ResponseEntity.ok(user.getUsername());
+    public ResponseEntity<String> hello(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(user.getName());
     }
 
     @GetMapping("/intro")
@@ -30,6 +31,22 @@ public class DemoController {
                 .meanings(word.getMeanings())
                 .build();
         return ResponseEntity.ok(wordResponse);
+    }
+
+    @GetMapping("/words")
+    public ResponseEntity<?> words() {
+        List<Word> words = wordService.getWords();
+        return ResponseEntity.ok(words);
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest req) {
+        User user = userService.update(req);
+        UserResponse res = UserResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .name(user.getName()).build();
+        return ResponseEntity.ok(res);
     }
 }
 

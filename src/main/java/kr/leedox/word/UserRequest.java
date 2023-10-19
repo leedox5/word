@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResisterRequest {
+public class UserRequest {
+    private Long id;
     private String username;
+    private String name;
     private String password;
 }
