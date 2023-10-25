@@ -77,6 +77,8 @@ public class AuthenticationService {
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
+                .username(user.getUsername())
+                .name(user.getName())
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -100,6 +102,8 @@ public class AuthenticationService {
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
                 var authResponse =AuthenticationResponse.builder()
+                        .username(user.getUsername())
+                        .name(user.getName())
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();

@@ -1,6 +1,7 @@
 package kr.leedox.word;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +34,31 @@ public class DemoController {
         return ResponseEntity.ok(wordResponse);
     }
 
+    @GetMapping("/word/{id}")
+    public ResponseEntity<?> word(@PathVariable Long id) {
+        Word word = wordService.getWordById(id);
+        System.out.println(word);
+        return ResponseEntity.ok(word);
+    }
+
     @GetMapping("/words")
     public ResponseEntity<?> words() {
         List<Word> words = wordService.getWords();
         return ResponseEntity.ok(words);
+    }
+
+    @GetMapping("/words/{opt}/{key}/{page}")
+    public ResponseEntity<?> words(@PathVariable Integer page, @PathVariable String opt, @PathVariable String key) {
+        Page<Word> words = wordService.getWords(opt, key, page - 1);
+        PageInfo pageInfo = PageInfo.builder()
+                .totalPages(words.getTotalPages())
+                .totalElements(words.getTotalElements())
+                .build();
+        WordsResponse res = WordsResponse.builder()
+                .words(words.getContent())
+                .pageInfo(pageInfo)
+                .build();
+        return ResponseEntity.ok(res);
     }
 
     @PutMapping("/user")
