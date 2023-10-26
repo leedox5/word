@@ -3,6 +3,7 @@ package kr.leedox.word;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,20 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthController {
 
+    @Autowired
+    WordService wordService;
+
     private final AuthenticationService service;
+
+    @GetMapping("/intro")
+    public ResponseEntity<?> intro() {
+        Word word = wordService.getWord("10010");
+        WordResponse wordResponse = WordResponse.builder()
+                .word("10010")
+                .meanings(word.getMeanings())
+                .build();
+        return ResponseEntity.ok(wordResponse);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(

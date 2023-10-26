@@ -8,4 +8,7 @@ import lombok.Data;
 public class PageInfo {
     private Long totalElements;
     private int totalPages;
+    private int number;
+    private String opt;
+    private String key;
 }

@@ -49,10 +49,16 @@ public class DemoController {
 
     @GetMapping("/words/{opt}/{key}/{page}")
     public ResponseEntity<?> words(@PathVariable Integer page, @PathVariable String opt, @PathVariable String key) {
+        if(page < 1) {
+            page = 1;
+        }
         Page<Word> words = wordService.getWords(opt, key, page - 1);
         PageInfo pageInfo = PageInfo.builder()
                 .totalPages(words.getTotalPages())
                 .totalElements(words.getTotalElements())
+                .number(words.getNumber() + 1)
+                .key(key)
+                .opt(opt)
                 .build();
         WordsResponse res = WordsResponse.builder()
                 .words(words.getContent())
